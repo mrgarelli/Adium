@@ -3,9 +3,9 @@ from selenium import webdriver
 
 """
 Creates simple browser instance, 
-navigates to New York Times home page and 
+navigates to New York Times home page 
 checks for the presence of a banner ad
-lastly, closes browser instance
+closes browser instance
     return True if no ads on page
     return False if ads on page
 """
