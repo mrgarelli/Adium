@@ -13,8 +13,7 @@ lastly, closes browser instance
 
 def get_new_browser():
 
-    chrome_driver_path = os.path.realpath('/Users/benlovell/Documents/Code/Adium/tests/chromedriver')
-    print(str(chrome_driver_path))
+    chrome_driver_path = os.path.dirname(os.path.abspath(__file__)) + '/chromedriver'
     options = webdriver.ChromeOptions()
     # All the arguments added for chromium to work on selenium
     options.add_argument("--no-default-browser-check")
@@ -25,7 +24,6 @@ def get_new_browser():
     options.add_argument("--no-sandbox")  # Bypass OS security model
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904 Safari/537.36')
 
-    print("attempting to create browser")
     try:
         browser = webdriver.Chrome(executable_path=chrome_driver_path, chrome_options=options)
     except Exception as e:
