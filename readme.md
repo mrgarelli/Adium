@@ -6,3 +6,4 @@ run auto.xsh
 
 pip install syspy using:
 > python3 -m pip install -i https://test.pypi.org/simple/ syspy
+
