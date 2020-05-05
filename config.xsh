@@ -1,11 +1,9 @@
 #!/usr/bin/env xonsh
 
 import os
-from syspy import Shell, extend
-sh = Shell()
 
 class dir:
-    adium = sh.dirname(os.path.abspath(__file__))
-    uBlock = extend(adium, 'uBlock')
-    chromium = extend(uBlock, 'platform/chromium')
-    build = extend(adium, 'build')
+    adium = os.path.dirname(os.path.abspath(__file__))
+    uBlock = os.path.join(adium, 'uBlock')
+    chromium = os.path.join(uBlock, 'platform', 'chromium')
+    build = os.path.join(adium, 'build')

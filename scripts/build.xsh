@@ -1,8 +1,5 @@
 #!/usr/bin/xonsh
 import os
-from syspy import Shell, extend
-sh = Shell()
-
 from config import dir
 
 reset='\033[0m'
@@ -19,8 +16,8 @@ def build_step(partial_function):
 
 @build_step
 def reset_and_update_uBlock():
-    if sh.exists(dir.uBlock):
-        sh.cd(dir.uBlock)
+    if os.path.exists(dir.uBlock):
+        cd @(dir.uBlock)
         git reset --hard HEAD
         git clean -f
         git clean -fd
@@ -31,17 +28,16 @@ def reset_and_update_uBlock():
 
 @build_step
 def build_uBlock_for_chrome():
-    sh.cd(dir.uBlock)
+    cd @(dir.uBlock)
     bash 'tools/copy-common-files.sh' @(dir.chromium)
 
 @build_step
 def move_chrome_uBlock_to_adium():
-    if sh.exists(dir.build): sh.rm(dir.build)
-    sh.mkdir(dir.build)
-    sh.cp(dir.chromium, dir.build)
+    if os.path.exists(dir.build):
+        rm @(dir.build)
+    mkdir @(dir.build)
+    cp @(dir.chromium) @(dir.build)
 
-# TODO: potentially clone uBlock if doesn't exist
-sh.verbose = True
 reset_and_update_uBlock()
 build_uBlock_for_chrome()
 move_chrome_uBlock_to_adium()
