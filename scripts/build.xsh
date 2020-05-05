@@ -1,4 +1,4 @@
-#!/usr/bin/xonsh
+#!/usr/bin/env xonsh
 import os
 from config import dir
 
@@ -34,9 +34,9 @@ def build_uBlock_for_chrome():
 @build_step
 def move_chrome_uBlock_to_adium():
     if os.path.exists(dir.build):
-        rm @(dir.build)
-    mkdir @(dir.build)
-    cp @(dir.chromium) @(dir.build)
+        rm -rf @(dir.build)
+    # mkdir @(dir.build)
+    cp -r @(dir.chromium)  @(dir.build)
 
 reset_and_update_uBlock()
 build_uBlock_for_chrome()
