@@ -20,6 +20,7 @@ ublock browser tests:
 * [ ] modify build scripts to identify mentions of uBlock and change them to Adium - Matt
 * [ ] run tests for any instances of words 'ublock', fail if present
 * [ ] integrate ublock success tests (blocks ads)
+* [ ] improve integration tests (new sites - reddit, google page, etc) - Ben
 * [ ] add cached build folder (for previous builds of uBlock)
 * [ ] deploy to chrome store - Ben
 * [ ] test on mac

@@ -10,6 +10,7 @@ if not os.listdir(submod_dir):
 sys.path.append(submod_dir) # allow this script to import from submod_dir
 
 from declarativeOpts import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
+from .integration_tests.ublock_tests import run_tests
 
 version = 'Version: 0.0.1'
 
@@ -54,6 +55,12 @@ class CLI(DeclarativeCLI):
             @staticmethod
             def instructions(remainder):
                 ./scripts/load.sh &
+        class test:
+            description = 'run integration integration_tests for uBlock'
+            @staticmethod
+            def instructions(remainder):
+                rtn = run_tests()
+                print(rtn)
 
         def __default_no_args__(self):
             cli.help()
