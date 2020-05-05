@@ -1,0 +1,62 @@
+#!/usr/bin/env xonsh
+
+import sys, os
+submod_file = 'declarecli/declarecli'
+this_dir = os.path.dirname(os.path.realpath(__file__))
+submod_dir = os.path.join(this_dir, submod_file)
+if not os.listdir(submod_dir):
+    os.system('git submodule init') # general submodule setup
+    os.system('git submodule update') # pulls the submodule at last tracked commit
+sys.path.append(submod_dir) # allow this script to import from submod_dir
+
+from declarativeOpts import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
+
+version = 'Version: 0.0.1'
+
+synopsis = '''\
+Usage: ./ops <--option|-o> <command>
+tools to manage adium integration pipeline and testing'''
+
+class CLI(DeclarativeCLI):
+    __level__ = 0
+    verbose = False
+    class Synopsis:
+        @staticmethod
+        def body(): print(synopsis)
+
+    class Options(DeclarativeOptions):
+        class help_h:
+            description = 'extended help message of this package'
+            @staticmethod
+            def instructions():
+                cli.extended_help()
+                sys.exit(0)
+        class verbose_v:
+            description = 'get more descriptive command output'
+            @staticmethod
+            def instructions():
+                cli.verbose = True
+        class version:
+            description = 'output the current tool version'
+            @staticmethod
+            def instructions():
+                print(version)
+                sys.exit(0)
+
+    class Commands(DeclarativeCommands):
+        class build:
+            description = 'create project by pulling dependencies'
+            @staticmethod
+            def instructions(remainder):
+                ./scripts/build.xsh
+        class load:
+            description = 'run the extension in chromium (kills all instances of chromium)'
+            @staticmethod
+            def instructions(remainder):
+                ./scripts/load.sh &
+
+        def __default_no_args__(self):
+            cli.help()
+
+cli = CLI()
+cli.run(sys.argv[1:])

@@ -1,0 +1,3 @@
+[submodule "declarecli"]
+	path = declarecli
+	url = https://github.com/mrgarelli/declarecli.git
