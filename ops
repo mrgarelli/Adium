@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, os
+
+try: import syspy, declarecli
+except: os.system('./scripts/update_dependencies.sh')
+
 from declarecli import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
 from syspy import Shell
 sh = Shell()
