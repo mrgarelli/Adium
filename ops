@@ -1,16 +1,7 @@
 #!/usr/bin/env xonsh
 
-import sys, os
-submod_file = 'declarecli/declarecli'
-this_dir = os.path.dirname(os.path.realpath(__file__))
-submod_dir = os.path.join(this_dir, submod_file)
-if not os.listdir(submod_dir):
-    os.system('git submodule init') # general submodule setup
-    os.system('git submodule update') # pulls the submodule at last tracked commit
-sys.path.append(submod_dir) # allow this script to import from submod_dir
-
-from declarativeOpts import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
-from .integration_tests.ublock_tests import run_tests
+import sys
+from declarecli import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
 
 version = 'Version: 0.0.1'
 
