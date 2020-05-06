@@ -37,14 +37,43 @@ def get_new_browser():
     return browser
 
 def run_tests():
+    # check nytimes.com
     browser = get_new_browser()
-    browser.get('https://www.nytimes.com')
+    checks_failed = 0
+    checks_passed = 0
+
+    # check nytimes.com for ads
     try:
-        browser.find_elements_by_xpath("//a[@href='#after-dfp-ad-top']")
-        browser.quit()
+        browser.get('https://www.nytimes.com')
+        nytimes_check = browser.find_elements_by_xpath("//a[@href='#after-dfp-ad-top']")
+        if nytimes_check:
+            checks_failed += 1
+    except Exception as e:
+        checks_passed += 1
+        pass
+
+    # check reddit for ads
+    try:
+        browser.get('https://www.reddit.com')
+        if 'promotedlink' in browser.page_source:
+            checks_failed += 1
+    except Exception as e:
+        checks_passed += 1
+        pass
+
+    # check google results page for ads
+    try:
+        browser.get('https://www.google.com/search?ei=fZOxXv3FJIHg-gTZ6JCwBQ&q=bike+gloves&oq=bike+gloves&gs_lcp=CgZwc3ktYWIQAzIFCAAQgwEyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAA6BAgAEEc6BwgAEIMBEEM6BAgAEENQnzRYr0JgvENoAHADeACAAUqIAbEFkgECMTGYAQCgAQGqAQdnd3Mtd2l6&sclient=psy-ab&ved=0ahUKEwi9-JzGkZ3pAhUBsJ4KHVk0BFYQ4dUDCAw&uact=5')
+        if 'Ad' in browser.page_source:
+            checks_failed += 1
+    except Exception as e:
+        checks_passed += 1
+        pass
+
+    browser.quit()
+    if checks_failed > 0:
         return False
-    except:
-        browser.quit()
+    else:
         return True
 
 test_results = run_tests()
