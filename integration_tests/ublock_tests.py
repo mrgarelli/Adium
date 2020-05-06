@@ -5,11 +5,11 @@ from selenium import webdriver
 
 """
 Creates simple browser instance, 
-navigates to New York Times home page 
-checks for the presence of a banner ad
+navigates to 3 different web pages 
+checks for the presence an ad
 closes browser instance
-    return True if no ads on page
-    return False if ads on page
+    return True if no ads appeared
+    return False if 1 or more ads appeared
 """
 
 
