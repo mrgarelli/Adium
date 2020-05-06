@@ -1,16 +1,9 @@
-#!/usr/bin/env xonsh
+#!/usr/bin/env python3
 
-import sys, os
-submod_file = 'declarecli/declarecli'
-this_dir = os.path.dirname(os.path.realpath(__file__))
-submod_dir = os.path.join(this_dir, submod_file)
-if not os.listdir(submod_dir):
-    os.system('git submodule init') # general submodule setup
-    os.system('git submodule update') # pulls the submodule at last tracked commit
-sys.path.append(submod_dir) # allow this script to import from submod_dir
-
-from declarativeOpts import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
-from .integration_tests.ublock_tests import run_tests
+import sys
+from declarecli import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
+from syspy import Shell
+sh = Shell()
 
 version = 'Version: 0.0.1'
 
@@ -20,7 +13,6 @@ tools to manage adium integration pipeline and testing'''
 
 class CLI(DeclarativeCLI):
     __level__ = 0
-    verbose = False
     class Synopsis:
         @staticmethod
         def body(): print(synopsis)
@@ -32,11 +24,19 @@ class CLI(DeclarativeCLI):
             def instructions():
                 cli.extended_help()
                 sys.exit(0)
+        class updateDependencies_u:
+            description = 'update all dependencies for the project'
+            @staticmethod
+            def instructions():
+                if not sh.exists('./env'):
+                    sh.command('virtualenv env', passFail=True)
+                sh.command('./scripts/update_dependencies.sh', passFail=True)
+                sh.finish()
         class verbose_v:
             description = 'get more descriptive command output'
             @staticmethod
             def instructions():
-                cli.verbose = True
+                sh.verbose = True
         class version:
             description = 'output the current tool version'
             @staticmethod
@@ -49,17 +49,21 @@ class CLI(DeclarativeCLI):
             description = 'create project by pulling dependencies'
             @staticmethod
             def instructions(remainder):
-                ./scripts/build.xsh
+                from scripts.build import build_ublock
+                build_ublock(sh)
         class load:
             description = 'run the extension in chromium (kills all instances of chromium)'
             @staticmethod
             def instructions(remainder):
-                ./scripts/load.sh &
+                sh.command('./scripts/load.sh &')
         class test:
             description = 'run integration integration_tests for uBlock'
             @staticmethod
             def instructions(remainder):
-                rtn = run_tests()
+                from tests.ublock_tests import IntegrationTests
+                chromedriver_path = sh.respond(['which', 'chromedriver']).strip()
+                i_tests = IntegrationTests(chromedriver_path)
+                rtn = i_tests.run_tests()
                 print(rtn)
 
         def __default_no_args__(self):
@@ -67,3 +71,4 @@ class CLI(DeclarativeCLI):
 
 cli = CLI()
 cli.run(sys.argv[1:])
+sh.finish()

@@ -1,11 +1,27 @@
-run auto.xsh
-> ./auto.xsh
+> ./ops
 
+# Installation
 
-[xonch documentation](https://xon.sh/osx.html)
+* create and activate virtualenv using xonsh
+```
+xontrib vox
+virtualenv env
+vox activate env
+```
 
-pip install syspy using:
-> python3 -m pip install -i https://test.pypi.org/simple/ syspy
+* install all dependencies
+```
+pip install -i https://test.pypi.org/simple/ syspy
+pip install -i https://test.pypi.org/simple/ declarecli
+pip install -r requirements.txt
+```
+
+* deactivate virtualenv
+```
+vox deactivate
+```
+
+# Testing
 
 ublock browser tests:
 - files under tests/ublock_tests
@@ -14,7 +30,8 @@ ublock browser tests:
 - will return False if ads present, True if ads not present
 
 
-#TODO:
+# TODO:
+
 * [ ] change all mentions of uBlock/uBlock origin to Adium - Matt
 * [ ] create new images in place of uBlock - Ben
 * [ ] modify build scripts to identify mentions of uBlock and change them to Adium - Matt
