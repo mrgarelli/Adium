@@ -1,1 +1,0 @@
-from ublock_tests import IntegrationTests
