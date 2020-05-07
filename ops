@@ -5,7 +5,7 @@ import sys, os
 try: import syspy, declarecli
 except: os.system('./scripts/update_dependencies.sh')
 
-from declarecli.declarecli.declarativeOpts import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
+from declarecli import DeclarativeCommands, DeclarativeOptions, DeclarativeCLI
 from syspy import Shell
 sh = Shell()
 
