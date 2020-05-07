@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os
+import os, time
 from selenium import webdriver
 
 """
@@ -15,6 +15,8 @@ closes browser instance
 class IntegrationTests:
     def __init__(self, driver_path):
         self.driver_path = driver_path
+        self.browser = self.get_new_browser()
+        self.results = []
 
     def get_new_browser(self):
 
@@ -35,49 +37,36 @@ class IntegrationTests:
 
         return browser
 
-    def run_tests(self):
-        # check nytimes.com
-        browser = self.get_new_browser()
-        nytimes_test = False
-        reddit_test = False
-        google_test = False
-        checks_failed = 0
-        checks_passed = 0
-
+    def run_check(self, url, check):
         # check nytimes.com for ads
-        try:
-            browser.get('https://www.nytimes.com')
-            nytimes_check = browser.find_elements_by_xpath("//a[@href='#after-dfp-ad-top']")
-            if nytimes_check:
-                checks_failed += 1
-        except Exception as e:
-            checks_passed += 1
-            nytimes_test = True
-            pass
+        self.browser.get(url)
+        time.sleep(3)
+        result = 'FAILED' if check() else 'PASSED'
+        print('[{}] '.format(result) + check.__name__)
+        self.results.append(True if result == 'PASSED' else False)
 
-        # check reddit for ads
-        try:
-            browser.get('https://www.reddit.com')
-            if 'promotedlink' in browser.page_source:
-                checks_failed += 1
-        except Exception as e:
-            checks_passed += 1
-            reddit_test = True
-            pass
+    def run_tests(self):
+        def ny_times_check():
+            try:
+                self.browser.find_elements_by_xpath("//a[@href='#after-dfp-ad-top']")
+            except: return False
+            return True
+        self.run_check('https://www.nytimes.com', ny_times_check)
 
-        # check google results page for ads
-        try:
-            browser.get('https://www.google.com/search?ei=fZOxXv3FJIHg-gTZ6JCwBQ&q=bike+gloves&oq=bike+gloves&gs_lcp=CgZwc3ktYWIQAzIFCAAQgwEyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAA6BAgAEEc6BwgAEIMBEEM6BAgAEENQnzRYr0JgvENoAHADeACAAUqIAbEFkgECMTGYAQCgAQGqAQdnd3Mtd2l6&sclient=psy-ab&ved=0ahUKEwi9-JzGkZ3pAhUBsJ4KHVk0BFYQ4dUDCAw&uact=5')
-            if 'Ad' in browser.page_source:
-                checks_failed += 1
-        except Exception as e:
-            checks_passed += 1
-            google_test = True
-            pass
 
-        browser.quit()
-        results = 'nytimes test: ' + str(nytimes_test) + '  |  reddit test: ' + str(reddit_test) + '  |  google test: ' + str(google_test)
-        if checks_failed > 0:
-            return [False, results]
-        else:
-            return [True, results]
+        def reddit_check():
+            if 'promotedlink' in self.browser.page_source: return True
+            return False
+        self.run_check('https://www.reddit.com', reddit_check)
+
+
+        def google_check():
+            if 'Ad' in self.browser.page_source: return True
+            return False
+        self.run_check(
+            'https://www.google.com/search?ei=fZOxXv3FJIHg-gTZ6JCwBQ&q=bike+gloves&oq=bike+gloves&gs_lcp=CgZwc3ktYWIQAzIFCAAQgwEyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAA6BAgAEEc6BwgAEIMBEEM6BAgAEENQnzRYr0JgvENoAHADeACAAUqIAbEFkgECMTGYAQCgAQGqAQdnd3Mtd2l6&sclient=psy-ab&ved=0ahUKEwi9-JzGkZ3pAhUBsJ4KHVk0BFYQ4dUDCAw&uact=5',
+            google_check
+            )
+
+        self.browser.quit()
+        return all(self.results)
