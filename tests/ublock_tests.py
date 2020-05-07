@@ -26,7 +26,7 @@ class IntegrationTests:
         options.add_argument("start-maximized")
         options.add_argument("--disable-dev-shm-usage")  # overcome limited resource problems
         options.add_argument("--no-sandbox")  # Bypass OS security model
-        options.add_argument("-load-extension=" + str(ublock_path))
+        options.add_argument("--load-extension=" + str(ublock_path))
         options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904 Safari/537.36')
 
         try:
