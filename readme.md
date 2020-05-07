@@ -42,3 +42,4 @@ ublock browser tests:
 * [ ] deploy to chrome store - Ben
 * [ ] test on mac
 * [ ] get Ben set up with Ubuntu (if test works on mac)
+* [ ] turn all 'off' settings to FALSE at this location: /Adium/uBlock/platform/chromium/assets/assets.json
