@@ -38,6 +38,9 @@ class IntegrationTests:
     def run_tests(self):
         # check nytimes.com
         browser = self.get_new_browser()
+        nytimes_test = False
+        reddit_test = False
+        google_test = False
         checks_failed = 0
         checks_passed = 0
 
@@ -49,6 +52,7 @@ class IntegrationTests:
                 checks_failed += 1
         except Exception as e:
             checks_passed += 1
+            nytimes_test = True
             pass
 
         # check reddit for ads
@@ -58,6 +62,7 @@ class IntegrationTests:
                 checks_failed += 1
         except Exception as e:
             checks_passed += 1
+            reddit_test = True
             pass
 
         # check google results page for ads
@@ -67,10 +72,12 @@ class IntegrationTests:
                 checks_failed += 1
         except Exception as e:
             checks_passed += 1
+            google_test = True
             pass
 
         browser.quit()
+        results = ' | nytimes test: ' + str(nytimes_test) + ' | reddit test: ' + str(reddit_test) + ' | google test: ' + str(google_test)
         if checks_failed > 0:
-            return False
+            return [False, results]
         else:
-            return True
+            return [True, results]
