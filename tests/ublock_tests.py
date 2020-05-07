@@ -76,7 +76,7 @@ class IntegrationTests:
             pass
 
         browser.quit()
-        results = ' | nytimes test: ' + str(nytimes_test) + ' | reddit test: ' + str(reddit_test) + ' | google test: ' + str(google_test)
+        results = 'nytimes test: ' + str(nytimes_test) + '  |  reddit test: ' + str(reddit_test) + '  |  google test: ' + str(google_test)
         if checks_failed > 0:
             return [False, results]
         else:
