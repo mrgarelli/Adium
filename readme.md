@@ -25,21 +25,24 @@ vox deactivate
 
 ublock browser tests:
 - files under tests/ublock_tests
-- run function via - specificaly function run_tests()
+- run function via - specifically function run_tests()
 > python3 ublock_tests.py
 - will return False if ads present, True if ads not present
 
 
 # TODO:
 
-* [ ] change all mentions of uBlock/uBlock origin to Adium - Matt
+* [ ] programatically turn all 'off' settings to FALSE at this location: /Adium/uBlock/platform/chromium/assets/assets.json
+* [ ] look into why 0 out of 0 ad filters used when loading
+    * [ ] look into how uBlock loads extensions - what filters do they turn on/how? Do they pull in any other dependencies? If so, at what point/how?
 * [ ] create new images in place of uBlock - Ben
 * [ ] modify build scripts to identify mentions of uBlock and change them to Adium - Matt
-* [ ] run tests for any instances of words 'ublock' within code, fail if present
-* [ ] integrate ublock success tests (blocks ads)
-* [x] improve integration tests (new sites - reddit, google page, etc) - Ben
+    * [ ] run tests for any instances of words 'ublock' within code, fail if present
+* [ ] setup django backend
+* [ ] insert ad on page
 * [ ] add cached build folder (for previous builds of uBlock)
 * [ ] deploy to chrome store - Ben
-* [ ] test on mac
-* [ ] get Ben set up with Ubuntu (if test works on mac)
-* [ ] turn all 'off' settings to FALSE at this location: /Adium/uBlock/platform/chromium/assets/assets.json
+* [x] test on mac
+* [x] integrate ublock success tests (blocks ads)
+* [x] improve integration tests (new sites - reddit, google page, etc) - Ben
+
