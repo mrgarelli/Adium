@@ -83,8 +83,11 @@ class IntegrationTests:
         time.sleep(2)
         self.browser.refresh()
         time.sleep(2)
-
-        update_button = self.browser.find_element_by_id('buttonUpdate')
+        filter_tab = self.browser.find_element(By.XPATH, "//span[@data-i18n='3pPageName']")
+        filter_tab.click()
+        time.sleep(2)
+        update_button = self.browser.find_element(By.XPATH, "//button[@class='important iconifiable']")
+        # update_button = self.browser.find_elements_by_xpath("//button[@data-i18n-title='3pUpdateNow']")
         update_button.click()
         time.sleep(20)
 
@@ -106,6 +109,7 @@ class IntegrationTests:
             'dpollock-0'                : True,
             'mvps-0'                    : True
         }
+
         filters_turned_on = 0
         with open(json_file_path, 'r+') as file:
             json_file = json.load(file)
@@ -113,8 +117,8 @@ class IntegrationTests:
             for element in json_file:
                 # check if element is adblock file to turn on
                 if element in dict_of_adblock_filters:
-                    data_dict = json_file[element]
-                    # does "off = True" mean it is turned off or on?Falsedata_dict['off'] = dict_of_adblock_filters[element]
+                    # does "off = True" mean it is turned off or on?
+                    json_file[element]['off'] = dict_of_adblock_filters[element]
                     filters_turned_on += 1
 
         with open(json_file_path, "w") as jsonFile:

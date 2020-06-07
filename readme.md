@@ -32,7 +32,6 @@ ublock browser tests:
 
 # TODO:
 
-* [ ] programatically turn all 'off' settings to FALSE at this location: /Adium/uBlock/platform/chromium/assets/assets.json
 * [ ] look into why 0 out of 0 ad filters used when loading
     * [ ] look into how uBlock loads extensions - what filters do they turn on/how? Do they pull in any other dependencies? If so, at what point/how?
 * [ ] create new images in place of uBlock - Ben
@@ -45,4 +44,4 @@ ublock browser tests:
 * [x] test on mac
 * [x] integrate ublock success tests (blocks ads)
 * [x] improve integration tests (new sites - reddit, google page, etc) - Ben
-
+* [x] programatically turn all 'off' settings to FALSE at this location: /Adium/uBlock/platform/chromium/assets/assets.json
