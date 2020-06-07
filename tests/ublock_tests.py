@@ -3,6 +3,7 @@
 import os, time, json
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 
 """
 Creates simple browser instance, 
@@ -19,6 +20,7 @@ class IntegrationTests:
         self.browser = self.get_new_browser()
         self.results = []
         self.turn_on_adblock_filters()
+        self.manually_refresh()
 
     def get_new_browser(self):
 
@@ -73,23 +75,36 @@ class IntegrationTests:
         self.browser.quit()
         return all(self.results)
 
+    def manually_refresh(self):
+        # this does not feel like the way to do this, but trying anyway
+        time.sleep(2)
+        adblock_extension_url = 'chrome-extension://fhbjfdibkgncdpkcbllcabkjheofajoo/dashboard.html#3p-filters.html'
+        self.browser.get(adblock_extension_url)
+        time.sleep(2)
+        self.browser.refresh()
+        time.sleep(2)
+
+        update_button = self.browser.find_element_by_id('buttonUpdate')
+        update_button.click()
+        time.sleep(20)
+
     def turn_on_adblock_filters(self):
         json_file_path = os.path.dirname(os.path.abspath(__file__))[:-6] + '/uBlock/platform/chromium/assets/assets.json'
         dict_of_adblock_filters = {
-            'adguard-generic'           : False,
-            'adguard-mobile'            : False,
-            'adguard-spyware'           : False,
-            'fanboy-enhanced'           : False,
-            'spam404-0'                 : False,
-            'adguard-annoyance'         : False,
-            'adguard-social'            : False,
-            'fanboy-thirdparty_social'  : False,
-            'fanboy-annoyance'          : False,
-            'fanboy-cookiemonster'      : False,
-            'fanboy-social'             : False,
-            'ublock-annoyances'         : False,
-            'dpollock-0'                : False,
-            'mvps-0'                    : False
+            'adguard-generic'           : True,
+            'adguard-mobile'            : True,
+            'adguard-spyware'           : True,
+            'fanboy-enhanced'           : True,
+            'spam404-0'                 : True,
+            'adguard-annoyance'         : True,
+            'adguard-social'            : True,
+            'fanboy-thirdparty_social'  : True,
+            'fanboy-annoyance'          : True,
+            'fanboy-cookiemonster'      : True,
+            'fanboy-social'             : True,
+            'ublock-annoyances'         : True,
+            'dpollock-0'                : True,
+            'mvps-0'                    : True
         }
         filters_turned_on = 0
         with open(json_file_path, 'r+') as file:
